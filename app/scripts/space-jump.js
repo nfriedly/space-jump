@@ -28,7 +28,8 @@
     x: platforms[0].x + platforms[0].width/2 - PLAYER_WIDTH/2,
     y: platforms[0].y + PLATFORM_HEIGHT,
     velocityX: 0,
-    velocityY: 0
+    velocityY: 0,
+    isOnPlatform: true
   };
 
   // this should return 0 at game start
@@ -46,13 +47,6 @@
     });
   }
 
-
-  function isOnPlatform() {
-    var platforms = getVisiblePlatforms();
-    return platforms.some(function(platform) {
-      return player.y == platform.y + PLATFORM_HEIGHT && player.x+PLAYER_WIDTH+1 >= platform.x && player.x <= platform.x + platform.width;
-    })
-  }
 
   // The game calculates y coordinates starting at the bottom and going up (so that it can add content at the top)
   // the canvas element calculates y coordinates starting at the top-left and going down
@@ -79,18 +73,17 @@
   function drawDebug() {
     var headPad = 15;
     var sidePad = 5;
-    var lineHeight = 12;
+    var lineHeight = 14;
     var lines = Object.keys(player).map(function(key) {
       return key + ': ' + player[key];
     }).concat([
-      'isOnPlatform: ' + isOnPlatform(),
       'offset: ' + getOffset()
     ]);
     ctx.font = '10pt Helvetica';
 
-    var width = lines.reduce(function(a, b) {
-      return Math.max(ctx.measureText(a).width, ctx.measureText(b).width)
-    });
+    var width = lines.reduce(function(curWidth, str) {
+      return Math.max(curWidth, ctx.measureText(str).width)
+    }, 0);
 
     ctx.fillStyle = "rgba(0,0,0,0.8)";
     ctx.fillRect(0, 0, width + sidePad*2 , (lines.length-1) * lineHeight + headPad*2);
@@ -112,20 +105,44 @@
     if (paused) return;
     var now = Date.now();
     var elapsed = (now - lastTick) / 1000;
+    lastTick = now;
     var tickDecel = elapsed * DECELERATION;
-    var standing = isOnPlatform();
+    var platformsInXRange = getVisiblePlatforms().filter(function(platform) {
+      return player.x+PLAYER_WIDTH+1 >= platform.x && player.x <= platform.x + platform.width
+    });
+    var py = Math.round(player.y);
+    var standing = platformsInXRange.some(function(platform) {
+      return py == platform.y + PLATFORM_HEIGHT;
+    });
+    player.isOnPlatform = standing;
     if (player.velocityX > 0) {
       player.velocityX = Math.max(0, player.velocityX - tickDecel);
     } else if (player.velocityX < 0) {
       player.velocityX = Math.min(0, player.velocityX + tickDecel);
     }
     player.velocityY = Math.max(-VELOCITY_MAX, player.velocityY - tickDecel);
+
     // can't go down through a platform
     if (standing && player.velocityY < 0) {
       player.velocityY = 0;
     }
+
     player.x += player.velocityX;
-    player.y += player.velocityY;
+
+
+    // if we're above a platform, the max we can fall is to the platform's surface
+    var collisionPlatform = player.velocityY < 0 && platformsInXRange.filter(function(platform) {
+      return player.y > platform.y && player.y + player.velocityY <= platform.y;
+    })[0];
+
+    if (collisionPlatform) {
+      player.y = collisionPlatform.y + PLATFORM_HEIGHT;
+      player.velocityY = 0;
+      player.isOnPlatform = true;
+    } else {
+      player.y += player.velocityY;
+    }
+
     if (player.y < 0) {
       paused = true;
       ctx.fillStyle = "rgba(255,0,0,0.8)";
@@ -137,7 +154,6 @@
       render();
       requestAnimationFrame(tick);
     }
-    lastTick = now;
   }
 
   function render() {
