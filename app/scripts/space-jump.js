@@ -17,9 +17,18 @@
     }
   ];
 
+  platforms.push(
+    {
+      x: 80,
+      y: platforms[0].y + 100,
+      width: 80
+      // height is always 2
+    }
+  );
+
   var VELOCITY_MAX = 10; // pixels per second
   var ACCELERATION = 1; // pps/keypress
-  var DECELERATION = 0.5; // pps/s
+  var DECELERATION = 2; // pps/s
   var PLAYER_HEIGHT = 20;
   var PLAYER_WIDTH = 20;
 
@@ -60,7 +69,7 @@
     var platformsToDraw = getVisiblePlatforms();
     platformsToDraw.forEach(function(platform) {
       ctx.fillStyle = '#ff3300';
-      ctx.fillRect(platform.x, toCanvasY(platform.y, PLATFORM_HEIGHT), platform.width, 2);
+      ctx.fillRect(platform.x, toCanvasY(platform.y, PLATFORM_HEIGHT), platform.width, PLATFORM_HEIGHT);
     });
   }
 
@@ -70,32 +79,60 @@
   }
 
   function drawDebug() {
-    var headPad = 15;
+    // todo: figure out how to calculate framerate
+    var headPad = 5;
     var sidePad = 5;
     var lineHeight = 14;
     var lines = Object.keys(player).map(function(key) {
       return key + ': ' + player[key];
     }).concat([
-      'offset: ' + getOffset()
+      'offset: ' + getOffset(),
+      'platforms: ' + getVisiblePlatforms().length + '/' + platforms.length
     ]);
     ctx.font = '10pt Helvetica';
+    ctx.textBaseline = 'top';
 
     var width = lines.reduce(function(curWidth, str) {
       return Math.max(curWidth, ctx.measureText(str).width);
     }, 0);
 
     ctx.fillStyle = 'rgba(0,0,0,0.8)';
-    ctx.fillRect(0, 0, width + sidePad*2 , (lines.length-1) * lineHeight + headPad*2);
+    ctx.fillRect(0, 0, width + sidePad*2 , (lines.length) * lineHeight + headPad*2);
 
     ctx.fillStyle = 'lime';
     lines.forEach(function(line, offset) {
       ctx.fillText(line, sidePad, offset*lineHeight + headPad);
     });
+  }
 
+  function drawDialog(text, background) {
+    ctx.font = '20px Helvetica';
+    ctx.textBaseline = 'top';
+    var padding = 10;
+    var width = ctx.measureText(text).width + padding*2;
+    console.log(ctx.measureText(text).width, padding*2, width)
+    var height = 40;
+    var left = canvas.width/2-width/2;
+    var top = canvas.height/2-height/2;
+    console.log('bg:', left, top, 'txt:', left + padding, top + padding);
+    ctx.fillStyle = background || 'rgba(255, 255, 255, 0.8)';
+    ctx.fillRect(left, top, width, height);
+    ctx.fillStyle = 'white';
+    ctx.fillText(text, left + padding, top + padding);
   }
 
   function clear() {
     ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
+  }
+
+
+  function render() {
+    clear();
+    drawPlatforms();
+    drawPlayer();
+    if (DEBUG) {
+      drawDebug();
+    }
   }
 
   var paused = false;
@@ -128,7 +165,7 @@
       player.velocityY = 0;
     }
 
-    player.x += player.velocityX;
+    player.x = Math.min(canvas.width, Math.max(0, player.x + player.velocityX));
 
 
     // if we're above a platform, the max we can fall is to the platform's surface
@@ -146,25 +183,13 @@
 
     if (player.y < 0) {
       paused = true;
-      ctx.fillStyle = 'rgba(255,0,0,0.8)';
-      ctx.fillRect(canvas.width/2-60, canvas.height/2-40, 120, 80);
-      ctx.font = '40pt Helvetica';
-      ctx.fillStyle = 'black';
-      ctx.fillText('Game over', canvas.width/2-50, canvas.height/2+10);
+      drawDialog('Game over', 'rgba(255,0,0,0.8)');
     } else {
       render();
       requestAnimationFrame(tick);
     }
   }
 
-  function render() {
-    clear();
-    if (DEBUG) {
-      drawDebug();
-    }
-    drawPlatforms();
-    drawPlayer();
-  }
 
   canvas.onclick = function() {
     paused = !paused;
@@ -173,11 +198,7 @@
       tick();
     }
     else {
-      ctx.fillStyle = 'rgba(0,0,255,0.8)';
-      ctx.fillRect(canvas.width/2-60, canvas.height/2-40, 120, 80);
-      ctx.font = '40pt Helvetica';
-      ctx.fillStyle = 'black';
-      ctx.fillText('Paused', canvas.width/2-50, canvas.height/2+10);
+      drawDialog('Paused', 'rgba(0,0,255,0.8)');
     }
   };
 

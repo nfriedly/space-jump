@@ -2,7 +2,9 @@ Space Jump
 ==========
 
 Space-themed game along the lines of doodle jump. 
-Not-very-accurate physics, but fun to play (or at least it will be when I'm done.)
+Not-very-accurate physics, but fun to play (or at least it should be when I'm done.)
+
+Try it out at http://nfriedly.github.io/space-jump/dist/
 
 
 MIT License
