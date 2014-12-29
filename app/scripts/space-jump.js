@@ -1,5 +1,5 @@
-(function() {
-  'use strict';
+//(function() {
+//  'use strict';
 
   var DEBUG = true;
 
@@ -10,10 +10,10 @@
   var PLATFORM_HEIGHT = 2;
   var platforms = [
     {
-      x: canvas.width/2 - 40/2,
-      y: canvas.height/2 - PLATFORM_HEIGHT,
-      width: 40
-      // height is always 2
+      x: 0,
+      y: canvas.height *.75 - PLATFORM_HEIGHT,
+      width: canvas.width
+      // height is always PLATFORM_HEIGHT
     }
   ];
 
@@ -22,13 +22,13 @@
       x: 80,
       y: platforms[0].y + 100,
       width: 80
-      // height is always 2
+      // height is always PLATFORM_HEIGHT
     }
   );
 
   var VELOCITY_MAX = 10; // pixels per second
   var ACCELERATION = 1; // pps/keypress
-  var DECELERATION = 2; // pps/s
+  var DECELERATION = 2.5; // pps/s
   var PLAYER_HEIGHT = 20;
   var PLAYER_WIDTH = 20;
 
@@ -65,11 +65,42 @@
     return canvas.height - (gameY - offset) - height;
   }
 
+  function calculatePlanetPath(platform) {
+    var path = [{
+      x: platform.x,
+      y: platform.y
+    }];
+    var x = 0;
+    var y;
+    while (x < platform.width) {
+      x += Math.max(1, Math.abs(Math.cos(x) * 21));
+      y = platform.y + 4 + Math.cos(x) * 3; //Math.cos(x).toFixed(1).substr(-1);
+      path.push({x:x, y:y});
+    }
+    path.push({x: platform.x + platform.width, y: platform.y - canvas.height/2});
+    path.push({x: platform.x, y: platform.y - canvas.height/2});
+    return path;
+  }
+
   function drawPlatforms () {
     var platformsToDraw = getVisiblePlatforms();
-    platformsToDraw.forEach(function(platform) {
-      ctx.fillStyle = '#ff3300';
-      ctx.fillRect(platform.x, toCanvasY(platform.y, PLATFORM_HEIGHT), platform.width, PLATFORM_HEIGHT);
+    platformsToDraw.forEach(function(platform, i) {
+      var y = toCanvasY(platform.y, PLATFORM_HEIGHT);
+      if (!i) {
+        var gradient = ctx.createLinearGradient(platform.x, y, platform.x + platform.width * 2/3, canvas.height);
+        gradient.addColorStop(0,'#887723');
+        gradient.addColorStop(1,'#662211');
+        ctx.fillStyle = gradient;
+        platform.path = platform.path || calculatePlanetPath(platform);
+        ctx.beginPath();
+        platform.path.forEach(function(point) {
+          ctx.lineTo(point.x, toCanvasY(point.y));
+        });
+        ctx.fill();
+      } else {
+        ctx.fillStyle = '#ff3300';
+        ctx.fillRect(platform.x, toCanvasY(platform.y, PLATFORM_HEIGHT), platform.width, PLATFORM_HEIGHT);
+      }
     });
   }
 
@@ -110,11 +141,9 @@
     ctx.textBaseline = 'top';
     var padding = 10;
     var width = ctx.measureText(text).width + padding*2;
-    console.log(ctx.measureText(text).width, padding*2, width)
     var height = 40;
     var left = canvas.width/2-width/2;
     var top = canvas.height/2-height/2;
-    console.log('bg:', left, top, 'txt:', left + padding, top + padding);
     ctx.fillStyle = background || 'rgba(255, 255, 255, 0.8)';
     ctx.fillRect(left, top, width, height);
     ctx.fillStyle = 'white';
@@ -222,6 +251,6 @@
   window.addEventListener('keydown',handleKeypress,true);
 
 
-  tick();
+  //tick();
 
-}());
+//}());

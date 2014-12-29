@@ -13,9 +13,12 @@ Todo
 * generate more platforms
 * better physics
 * limit power (but add a recharge?)
+* sounds (and music?)
 * explosions on a hard collision
 * some effect for soft collision
 * goal / winning conditions
+* moving platforms (?)
+* mini-map
 * report framerate
 
 
