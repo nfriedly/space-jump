@@ -6,6 +6,18 @@ Not-very-accurate physics, but fun to play (or at least it should be when I'm do
 
 Try it out at http://nfriedly.github.io/space-jump/dist/
 
+Todo
+----
+
+* artwork
+* generate more platforms
+* better physics
+* limit power (but add a recharge?)
+* explosions on a hard collision
+* some effect for soft collision
+* goal / winning conditions
+* report framerate
+
 
 MIT License
 -----------
