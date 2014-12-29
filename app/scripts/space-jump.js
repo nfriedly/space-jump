@@ -1,12 +1,11 @@
-//(function() {
-//  "use strict";
+(function() {
+  'use strict';
 
   var DEBUG = true;
 
   var canvas = document.getElementById('game-window');
 
   var ctx = canvas.getContext('2d');
-  var context = ctx; // make my life easier
 
   var PLATFORM_HEIGHT = 2;
   var platforms = [
@@ -60,13 +59,13 @@
   function drawPlatforms () {
     var platformsToDraw = getVisiblePlatforms();
     platformsToDraw.forEach(function(platform) {
-      ctx.fillStyle = "#ff3300";
+      ctx.fillStyle = '#ff3300';
       ctx.fillRect(platform.x, toCanvasY(platform.y, PLATFORM_HEIGHT), platform.width, 2);
     });
   }
 
   function drawPlayer () {
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = '#000000';
     ctx.fillRect(player.x, toCanvasY(player.y, PLAYER_HEIGHT), 20, 20);
   }
 
@@ -82,10 +81,10 @@
     ctx.font = '10pt Helvetica';
 
     var width = lines.reduce(function(curWidth, str) {
-      return Math.max(curWidth, ctx.measureText(str).width)
+      return Math.max(curWidth, ctx.measureText(str).width);
     }, 0);
 
-    ctx.fillStyle = "rgba(0,0,0,0.8)";
+    ctx.fillStyle = 'rgba(0,0,0,0.8)';
     ctx.fillRect(0, 0, width + sidePad*2 , (lines.length-1) * lineHeight + headPad*2);
 
     ctx.fillStyle = 'lime';
@@ -102,17 +101,19 @@
   var paused = false;
   var lastTick = Date.now();
   function tick() {
-    if (paused) return;
+    if (paused) {
+      return;
+    }
     var now = Date.now();
     var elapsed = (now - lastTick) / 1000;
     lastTick = now;
     var tickDecel = elapsed * DECELERATION;
     var platformsInXRange = getVisiblePlatforms().filter(function(platform) {
-      return player.x+PLAYER_WIDTH+1 >= platform.x && player.x <= platform.x + platform.width
+      return player.x+PLAYER_WIDTH+1 >= platform.x && player.x <= platform.x + platform.width;
     });
     var py = Math.round(player.y);
     var standing = platformsInXRange.some(function(platform) {
-      return py == platform.y + PLATFORM_HEIGHT;
+      return py === platform.y + PLATFORM_HEIGHT;
     });
     player.isOnPlatform = standing;
     if (player.velocityX > 0) {
@@ -145,11 +146,11 @@
 
     if (player.y < 0) {
       paused = true;
-      ctx.fillStyle = "rgba(255,0,0,0.8)";
+      ctx.fillStyle = 'rgba(255,0,0,0.8)';
       ctx.fillRect(canvas.width/2-60, canvas.height/2-40, 120, 80);
       ctx.font = '40pt Helvetica';
       ctx.fillStyle = 'black';
-      ctx.fillText("Game over", canvas.width/2-50, canvas.height/2+10);
+      ctx.fillText('Game over', canvas.width/2-50, canvas.height/2+10);
     } else {
       render();
       requestAnimationFrame(tick);
@@ -172,11 +173,11 @@
       tick();
     }
     else {
-      ctx.fillStyle = "rgba(0,0,255,0.8)";
+      ctx.fillStyle = 'rgba(0,0,255,0.8)';
       ctx.fillRect(canvas.width/2-60, canvas.height/2-40, 120, 80);
       ctx.font = '40pt Helvetica';
       ctx.fillStyle = 'black';
-      ctx.fillText("Paused", canvas.width/2-50, canvas.height/2+10);
+      ctx.fillText('Paused', canvas.width/2-50, canvas.height/2+10);
     }
   };
 
@@ -202,4 +203,4 @@
 
   tick();
 
-//}());
+}());
