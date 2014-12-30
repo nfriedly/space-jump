@@ -10,7 +10,6 @@ Todo
 ----
 
 * artwork
-* generate more platforms
 * better physics
 * limit power (but add a recharge?)
 * sounds (and music?)
