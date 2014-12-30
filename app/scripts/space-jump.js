@@ -12,7 +12,6 @@
    };
    */
 
-
   var DEBUG = true;
 
   var canvas = document.getElementById('game-window');
@@ -20,6 +19,7 @@
   var ctx = canvas.getContext('2d');
 
   var PLATFORM_HEIGHT = 2;
+  var PLAYER_WIDTH = 15;
 
   function Platform(x, y, width) {
     this.x = x;
@@ -94,8 +94,8 @@
     planet
   ];
 
+  // generate the rest of the platforms
   var lastPlatform = planet;
-
   for (var i = 1; i <= 100; i++) {
     var y = lastPlatform.y + 60 + Math.round(Math.abs(Math.cos(i)) * 100) + i * 2;
     var width = 60 + Math.round(Math.abs(Math.sin(i)) * 150 - i * 1.5);
@@ -104,12 +104,11 @@
     platforms.push(lastPlatform);
   }
 
+  var GAME_HEIGHT = platforms[platforms.length-1].y + 200;
 
   var VELOCITY_MAX = 10; // pixels per second
   var ACCELERATION = 1; // pps/keypress
   var DECELERATION = 2.5; // pps/s
-  var PLAYER_HEIGHT = 20;
-  var PLAYER_WIDTH = 20;
 
   var player = {
     x: platforms[0].x + platforms[0].width / 2 - PLAYER_WIDTH / 2,
@@ -152,13 +151,55 @@
     });
   }
 
+
   function drawPlayer() {
-    ctx.fillStyle = '#000000';
-    ctx.fillRect(player.x, toCanvasY(player.y, PLAYER_HEIGHT), 20, 20);
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    var x = player.x;
+    var y = toCanvasY(player.y);
+
+    // left wing
+    ctx.moveTo(player.x+4, y-3);
+    ctx.quadraticCurveTo(x-1,y-4,  x,y+2);
+    ctx.bezierCurveTo(x,y-9, x+1,y-10, x+4,y-10);
+
+    // left hull
+    ctx.lineTo(x+4,y-25);
+
+    // nose
+    ctx.bezierCurveTo(x+4,y-27, x+5,y-30, x+7,y-30);
+    ctx.bezierCurveTo(x+8,y-30, x+9,y-27,  x+10,y-27);
+
+    // right hull
+    ctx.lineTo(x+10, y-10);
+
+    // right wing
+    ctx.bezierCurveTo(x+13,y-9, x+14,y-10, x+14,y+2);
+    ctx.quadraticCurveTo(x+15,y-4, x+10,y-3);
+
+    ctx.fill();
+
+    // top wing
+    ctx.beginPath();
+    ctx.moveTo(x+7, y-10);
+    ctx.lineTo(x+7, y);
+    ctx.stroke();
+
+    // window
+    ctx.fillStyle = '#8888ff';
+    ctx.beginPath();
+    ctx.arc(x+7, y-26, 2, 0, Math.PI*2, false);
+    ctx.fill();
   }
 
+  var lastFrameTime = Date.now();
   function drawDebug() {
-    // todo: figure out how to calculate framerate
+
+    // calculate framerate
+    var now = Date.now();
+    var fps = Math.round(100000/(now-lastFrameTime))/100;
+    lastFrameTime = now;
+
     var headPad = 5;
     var sidePad = 5;
     var lineHeight = 14;
@@ -166,8 +207,11 @@
       return key + ': ' + player[key];
     }).concat([
       'offset: ' + getOffset(),
-      'platforms: ' + getVisiblePlatforms().length + '/' + platforms.length
+      'platforms: ' + getVisiblePlatforms().length + '/' + platforms.length,
+      'fps: ' + fps,
+      '% complete: ' + Math.round(getOffset() / GAME_HEIGHT * 10000)/100
     ]);
+
     ctx.font = '10pt Helvetica';
     ctx.textBaseline = 'top';
 
@@ -203,8 +247,27 @@
   }
 
 
+
+  var backgroundImage = new Image();
+  backgroundImage.onload = function() {
+    backgroundImage.loaded = true;
+  };
+  backgroundImage.src = 'images/PIA17843.jpg';
+
+
+  function drawBackground() {
+    if (!backgroundImage.loaded) {
+      return clear();
+    }
+    var bg = backgroundImage;
+
+    var offset = getOffset() / GAME_HEIGHT * bg.height;
+    ctx.drawImage(bg, 0, canvas.height - bg.height + offset);
+  }
+
+
   function render() {
-    clear();
+    drawBackground();
     drawPlatforms();
     drawPlayer();
     if (DEBUG) {
@@ -262,6 +325,9 @@
     if (player.y < 0) {
       paused = true;
       drawDialog('Game over', 'rgba(255,0,0,0.8)');
+    } else if (player.y > GAME_HEIGHT + canvas.height/2) {
+      paused = true;
+      drawDialog('You win!', 'rgba(30, 255, 30, 0.8');
     } else {
       render();
       requestAnimationFrame(tick);

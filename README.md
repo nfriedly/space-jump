@@ -9,16 +9,23 @@ Try it out at http://nfriedly.github.io/space-jump/dist/
 Todo
 ----
 
-* artwork
+* improve frame rate
+* fix background image above ~ 80%
+* limit power (w/ recharge)
+* mini-map
+* better artwork
 * better physics
-* limit power (but add a recharge?)
 * sounds (and music?)
 * explosions on a hard collision
 * some effect for soft collision
-* goal / winning conditions
 * moving platforms (?)
-* mini-map
-* report framerate
+
+
+Credits
+-------
+
+Background images courtesy [NASA NASA/JPL-Caltech](http://www.jpl.nasa.gov/spaceimages/), used with [permission](http://www.jpl.nasa.gov/imagepolicy/)
+
 
 
 MIT License
