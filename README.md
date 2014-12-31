@@ -9,16 +9,17 @@ Try it out at http://nfriedly.github.io/space-jump/dist/
 Todo
 ----
 
-* improve frame rate
 * fix background image above ~ 80%
 * limit power (w/ recharge)
 * mini-map
 * better artwork
 * better physics
 * sounds (and music?)
+* make it work on mobile (maybe read the accelerometer?)
 * explosions on a hard collision
 * some effect for soft collision
 * moving platforms (?)
+* improve frame rate (only slow on my big screen...)
 
 
 Credits
