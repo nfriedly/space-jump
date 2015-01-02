@@ -1,5 +1,5 @@
 /* exported: SpaceJump */
-/* globals Settings, Player, Canvas, Input, Platforms */
+/* globals Player, Canvas, Input, Platforms */
 
 (function () {
   'use strict';
@@ -15,12 +15,13 @@
    };
    */
 
+  var states = {
+    START: 'start',
+    PLAYING: 'playing',
+    WIN: 'win'
+  };
 
-  var VELOCITY_MAX = 10; // pixels per second
-  var ACCELERATION = 6; // pps/keypress
-  var DECELERATION = 2.5; // pps/s
-  var FRICTION = 10; // left/right resistance when player is on a platform
-
+  var gameState = states.START;
 
   var lastTick = Date.now();
 
@@ -28,76 +29,33 @@
     var now = Date.now();
     var elapsed = (now - lastTick) / 1000;
     lastTick = now;
-    if (Settings.paused) {
-      Canvas.drawDialog('Paused', 'rgba(0,0,255,0.8)');
-      setTimeout(tick, 200);
-    }
-    var tickDecel = elapsed * DECELERATION;
-    var tickAccel = elapsed * ACCELERATION;
-    var tickFriction = elapsed * FRICTION;
-    var platformsInXRange = Platforms.getVisiblePlatforms().filter(function (platform) {
-      return Player.x + Player.width + 1 >= platform.x && Player.x <= platform.x + platform.width;
-    });
-    var py = Math.round(Player.y);
-    var standing = platformsInXRange.some(function (platform) {
-      return py === platform.y + platform.height;
-    });
-    Player.isOnPlatform = standing;
 
 
     var inputs = Input.getInputs();
-    if (inputs.up) {
-      Player.velocityY = Math.min(Player.velocityY + inputs.up*tickAccel, VELOCITY_MAX);
-    }
-    if (inputs.left) {
-      Player.velocityX = Math.max(Player.velocityX - inputs.left*tickAccel, -VELOCITY_MAX);
-    }
-    if (inputs.right) {
-      Player.velocityX = Math.min(Player.velocityX + inputs.right*tickAccel, VELOCITY_MAX);
-    }
 
-    if (Player.velocityX > 0) {
-      Player.velocityX = Math.max(0, Player.velocityX - tickDecel - (standing ? tickFriction : 0));
-    } else if (Player.velocityX < 0) {
-      Player.velocityX = Math.min(0, Player.velocityX + tickDecel + (standing ? tickFriction : 0));
+    switch (gameState) {
+      case states.START:
+        if (inputs.up) {
+          gameState = states.PLAYING;
+        } else {
+          Canvas.render();
+          Canvas.drawDialog('Escape the planet\'s gravity!\nPress \u2191\u20de or touch screen.', 'rgba(10, 4, 133, 0.8)');
+        }
+        break;
+      case states.PLAYING:
+        Player.tick(elapsed, inputs);
+        if (Player.y > Platforms.GAME_HEIGHT + Canvas.height / 2) {
+          gameState = states.WIN;
+        }
+        Canvas.render();
+        break;
+      case states.WIN:
+        Canvas.render();
+        Canvas.drawDialog('You win!', 'rgba(30, 255, 30, 0.8');
+        break;
     }
-    Player.velocityY = Math.max(-VELOCITY_MAX, Player.velocityY - tickDecel);
-
-    // can't go down through a platform
-    if (standing && Player.velocityY < 0) {
-      Player.velocityY = 0;
-    }
-
-    Player.x = Math.min(Canvas.width - Player.width, Math.max(0, Player.x + Player.velocityX));
-
-
-    // if we're above a platform, the max we can fall is to the platform's surface
-    var collisionPlatform = Player.velocityY < 0 && platformsInXRange.filter(function (platform) {
-        return Player.y > platform.y && Player.y + Player.velocityY <= platform.y;
-      })[0];
-
-    if (collisionPlatform) {
-      Player.y = collisionPlatform.y + collisionPlatform.height;
-      Player.velocityY = 0;
-      Player.isOnPlatform = true;
-    } else {
-      Player.y += Player.velocityY;
-    }
-
-    if (Player.y < 0 && false) {
-      Settings.paused = true;
-      Canvas.drawDialog('Game over', 'rgba(255,0,0,0.8)');
-    } else if (Player.y > Platforms.GAME_HEIGHT + Canvas.height/2) {
-      Settings.paused = true;
-      Canvas.drawDialog('You win!', 'rgba(30, 255, 30, 0.8');
-    } else {
-      Canvas.render();
-      requestAnimationFrame(tick);
-    }
+    requestAnimationFrame(tick);
   }
-
-
-
 
 
   tick();

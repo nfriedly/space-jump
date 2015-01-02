@@ -32,14 +32,21 @@
           <canvas id="game-window" height="400" width="400"></canvas>
         </div>
         <div class="col-md-4 col-lg-6">
-          <p>You've landed on an alien world in search of fortunes and adventure.
-            Unfortunately, there's nothing but rocks and a thin atmosphere. Also, you're getting hungry.</p>
-          <p>It's time to go home.</p>
-          <p>But, there's a problem. There's too much debris in orbit. That, and the fact that
-            your weak-sauce engine isn't anywhere near powerful enough to escape this planet's gravity.</p>
-          <p>Nevermind that, the fearless captain (you) always has a plan! Maybe if you can just get up to that first piece of floating space junk...</p>
 
-          <p><button class="btn btn-default" id="pause">Pause</button> <button class="btn btn-default" id="debug">Toggle Debug</button></p>
+          <p>
+            <button class="btn btn-primary visible-xs-inline" id="story-toggle" type="button" data-toggle="collapse" data-target="#story" aria-expanded="true" aria-controls="story">Story</button>
+            <button class="btn btn-default" id="debug">Toggle Debug</button>
+          </p>
+
+          <div id="story" class="">
+            <p>You've landed on an alien world in search of fortunes and adventure.
+              Unfortunately, there's nothing but rocks and a thin atmosphere. Also, you're getting hungry.</p>
+            <p>It's time to go home.</p>
+            <p>But, there's a problem. There's too much debris in orbit. That, and the fact that
+              your weak-sauce engine isn't anywhere near powerful enough to escape this planet's gravity.</p>
+            <p>Nevermind that, the fearless captain (you) always has a plan! Maybe if you can just get up to that first piece of floating space junk...</p>
+          </div>
+
         </div>
       </div>
     </div>
@@ -56,8 +63,33 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <!-- script src="../bower_components/jquery/dist/jquery.js"></script -->
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
     <!-- endbower -->
+    <!-- endbuild -->
+
+
+    <script>
+        if( $(window).width() <= 480) {
+          $('#story-toggle').attr('aria-expanded', 'false');
+          $('#story').addClass('collapse');
+        }
+    </script>
+
+    <!-- build:js scripts/plugins.js -->
+    <!--
+    <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script>
+    <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script>
+    <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script>
+    <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script>
+    <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script>
+    <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script>
+    <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script>
+    <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
+    <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script>
+    <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
+    <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
+    -->
+    <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script>
     <!-- endbuild -->
 
 

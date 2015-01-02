@@ -2,8 +2,7 @@
   'use strict';
 
   var Settings = {
-    debug: false,
-    pause: false
+    debug: false
   };
 
   Object.keys(Settings).forEach(function(key) {

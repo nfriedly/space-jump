@@ -24,6 +24,11 @@
     return Canvas.height - (gameY - offset) - height;
   };
 
+  function getMaxLineWidth(lines) {
+    return lines.reduce(function (curWidth, str) {
+      return Math.max(curWidth, ctx.measureText(str).width);
+    }, 0);
+  }
 
   var lastFrameTime = Date.now();
 
@@ -56,9 +61,7 @@
     ctx.font = '10pt Helvetica';
     ctx.textBaseline = 'top';
 
-    var width = lines.reduce(function (curWidth, str) {
-      return Math.max(curWidth, ctx.measureText(str).width);
-    }, 0);
+    var width = getMaxLineWidth(lines);
 
     ctx.fillStyle = 'rgba(0,0,0,0.8)';
     ctx.fillRect(0, 0, width + sidePad * 2, (lines.length) * lineHeight + headPad * 2);
@@ -72,19 +75,24 @@
   Canvas.drawDialog = function (text, background) {
     ctx.font = '20px Helvetica';
     ctx.textBaseline = 'top';
+    var lines = text.split('\n');
     var padding = 10;
-    var width = ctx.measureText(text).width + padding * 2;
-    var height = 40;
+    var width = getMaxLineWidth(lines) + padding * 2;
+    var lineHeight = 25;
+    var height = lines.length * lineHeight + padding * 1.5; // only half padding on the bottom because of the line-height
     var left = Canvas.width / 2 - width / 2;
     var top = Canvas.height / 2 - height / 2;
     ctx.fillStyle = background || 'rgba(255, 255, 255, 0.8)';
     ctx.fillRect(left, top, width, height);
     ctx.fillStyle = 'white';
-    ctx.fillText(text, left + padding, top + padding);
+    lines.forEach(function(line, i) {
+      ctx.fillText(line, Canvas.width/2 - ctx.measureText(line).width/2, top + padding + (i*lineHeight));
+    });
   };
 
   function clear() {
-    ctx.clearRect(0, 0, Canvas.width, Canvas.height);
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, Canvas.width, Canvas.height);
   }
 
 
@@ -96,6 +104,7 @@
     }
     Platforms.draw(ctx);
     Player.draw(ctx);
+    Player.drawFuelGuage(ctx);
     if (Settings.debug) {
       drawDebug();
     }
