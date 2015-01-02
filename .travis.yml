@@ -6,6 +6,7 @@ install:
  - gem install sass
  - npm install -g bower
  - bower install
+ - npm install
 
 env:
   global:
