@@ -4,7 +4,7 @@ Space Jump
 [![Build Status](https://travis-ci.org/nfriedly/space-jump.svg?branch=master)](https://travis-ci.org/nfriedly/space-jump)
 
 Space-themed game along the lines of doodle jump. 
-Not-very-accurate physics, but fun to play (or at least it should be when I'm done.)
+Not-very-accurate physics, but fun to play :)
 
 Try it out at http://nfriedly.github.io/space-jump/
 

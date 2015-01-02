@@ -1,6 +1,12 @@
 language: node_js
 node_js:
 - '0.10'
+
+install:
+ - gem install sass
+ - npm install -g bower
+ - bower install
+
 env:
   global:
     GIT_NAME: Nathan Friedly [via Travis CI]
