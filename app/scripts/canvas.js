@@ -1,5 +1,5 @@
 /* exported: Canvas */
-/* globals Background, Player, Settings, Platforms, Player */
+/* globals Background, Player, Settings, Platforms, Player, MobileInput */
 
 (function (root) {
   'use strict';
@@ -46,7 +46,12 @@
       'platforms: ' + Platforms.getVisiblePlatforms().length + '/' + Platforms.length,
       'fps: ' + fps,
       '% complete: ' + Math.round(Canvas.getOffset() / Platforms.GAME_HEIGHT * 10000) / 100
-    ]);
+    ]).concat(
+      Object.keys(MobileInput.inputMap).map(function (key) {
+        return 'Mobile ' + key + ': ' + MobileInput.inputMap[key];
+      })
+    );
+
 
     ctx.font = '10pt Helvetica';
     ctx.textBaseline = 'top';

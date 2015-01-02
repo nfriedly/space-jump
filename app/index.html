@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- , minimal-ui -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0"><!-- , minimal-ui -->
     <title>space jump</title>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
@@ -28,7 +28,7 @@
     <div class="container">
       <h1>Space Jump</h1>
       <div class="row">
-        <div class="col-md-8 col-lg-6 text-center">
+        <div class="col-md-8 col-lg-6 text-center game-window-container">
           <canvas id="game-window" height="400" width="400"></canvas>
         </div>
         <div class="col-md-4 col-lg-6">
@@ -62,15 +62,17 @@
 
 
 
-        <!-- build:js scripts/main.js -->
-        <script src="scripts/util.js"></script>
-        <script src="scripts/settings.js"></script>
-        <script src="scripts/canvas.js"></script>
-        <script src="scripts/platforms.js"></script>
-        <script src="scripts/player.js"></script>
-        <script src="scripts/background.js"></script>
-        <script src="scripts/keyboard.js"></script>
-        <script src="scripts/space-jump.js"></script>
-        <!-- endbuild -->
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/util.js"></script>
+    <script src="scripts/settings.js"></script>
+    <script src="scripts/canvas.js"></script>
+    <script src="scripts/platforms.js"></script>
+    <script src="scripts/player.js"></script>
+    <script src="scripts/background.js"></script>
+    <script src="scripts/keyboard.js"></script>
+    <script src="scripts/mobile-input.js"></script>
+    <script src="scripts/input.js"></script>
+    <script src="scripts/space-jump.js"></script>
+    <!-- endbuild -->
 </body>
 </html>

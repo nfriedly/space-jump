@@ -4,4 +4,10 @@ $icon-font-path: '../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "../../bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
-canvas {border: 1px solid black;  }
+canvas {max-width: 100%; }
+
+@media(max-width: $screen-sm) {
+  .game-window-container {
+    margin: 0 -15px;
+  }
+}

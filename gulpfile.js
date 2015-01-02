@@ -122,6 +122,11 @@ gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras'], function () 
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
+gulp.task('deploy', ['build'], function() {
+  return gulp.src('.dist/**/*')
+    .pipe($.deploy({}));
+});
+
 gulp.task('default', ['clean'], function () {
   gulp.start('build');
 });

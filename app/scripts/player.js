@@ -1,5 +1,5 @@
 /* exported: Player */
-/* globals Keyboard, Platforms, Util, Canvas*/
+/* globals Input, Platforms, Util, Canvas*/
 (function(root) {
   'use strict';
 var PLAYER_WIDTH = 15;
@@ -51,8 +51,10 @@ Player.draw = function (ctx) {
   var flameExtras = [3, 5, 2, 7];
   var extra = Util.mapToArray(ms, 0, 999, flameExtras);
 
+
+  var inputs = Input.getInputs();
   // bottom rocket
-  if (Keyboard.inputMap.up) {
+  if (inputs.up) {
     // red
     ctx.fillStyle = '#FF1D0E';
     ctx.beginPath();
@@ -71,13 +73,13 @@ Player.draw = function (ctx) {
   }
 
   // left rocket (lights up when right arrow is pressed)
-  if (Keyboard.inputMap.right) {
+  if (inputs.right > 0.1) {
     // red
     ctx.fillStyle = '#FF1D0E';
     ctx.beginPath();
     ctx.moveTo(x+4, y-20);
     ctx.lineTo(x+4, y-14);
-    ctx.lineTo(x-3-extra, y-17);
+    ctx.lineTo(x-3-extra*inputs.right, y-17);
     ctx.fill();
 
     // yellow
@@ -85,18 +87,18 @@ Player.draw = function (ctx) {
     ctx.beginPath();
     ctx.moveTo(x+4, y-20);
     ctx.lineTo(x+4, y-14);
-    ctx.lineTo(x-extra, y-17);
+    ctx.lineTo(x-extra*inputs.right, y-17);
     ctx.fill();
   }
 
   // left rocket (lights up when right arrow is pressed)
-  if (Keyboard.inputMap.left) {
+  if (inputs.left > 0.1) {
     // red
     ctx.fillStyle = '#FF1D0E';
     ctx.beginPath();
     ctx.moveTo(x+10, y-20);
     ctx.lineTo(x+10, y-14);
-    ctx.lineTo(x+17+extra, y-17);
+    ctx.lineTo(x+17+extra*inputs.left, y-17);
     ctx.fill();
 
     // yellow
@@ -104,7 +106,7 @@ Player.draw = function (ctx) {
     ctx.beginPath();
     ctx.moveTo(x+10, y-20);
     ctx.lineTo(x+10, y-14);
-    ctx.lineTo(x+14+extra, y-17);
+    ctx.lineTo(x+14+extra*inputs.left, y-17);
     ctx.fill();
   }
 

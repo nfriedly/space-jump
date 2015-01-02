@@ -1,5 +1,5 @@
 /* exported: SpaceJump */
-/* globals Settings, Player, Canvas, Keyboard, Platforms */
+/* globals Settings, Player, Canvas, Input, Platforms */
 
 (function () {
   'use strict';
@@ -45,14 +45,15 @@
     Player.isOnPlatform = standing;
 
 
-    if (Keyboard.inputMap.up) {
-      Player.velocityY = Math.min(Player.velocityY + tickAccel, VELOCITY_MAX);
+    var inputs = Input.getInputs();
+    if (inputs.up) {
+      Player.velocityY = Math.min(Player.velocityY + inputs.up*tickAccel, VELOCITY_MAX);
     }
-    if (Keyboard.inputMap.left) {
-      Player.velocityX = Math.max(Player.velocityX - tickAccel, -VELOCITY_MAX);
+    if (inputs.left) {
+      Player.velocityX = Math.max(Player.velocityX - inputs.left*tickAccel, -VELOCITY_MAX);
     }
-    if (Keyboard.inputMap.right) {
-      Player.velocityX = Math.min(Player.velocityX + tickAccel, VELOCITY_MAX);
+    if (inputs.right) {
+      Player.velocityX = Math.min(Player.velocityX + inputs.right*tickAccel, VELOCITY_MAX);
     }
 
     if (Player.velocityX > 0) {
