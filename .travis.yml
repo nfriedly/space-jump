@@ -10,9 +10,9 @@ install:
 
 env:
   global:
-    GIT_NAME: Nathan Friedly [via Travis CI]
-    GH_REPO: nfriedly/space-jump
-    secure: "WMh/6O1oL2bu+WNK5u5VdOjj7zoQXNIK9yHjEOgN56+C3Vv6apy58sX9lQj27b8o9ylH3XLtdFzmICIVaXX4d9KisomwrPy7IY7QIAEtLn9GIHesfYuzqJ1nN54z4C5Fwt8/vy0afF5gPuHGxoX/mQANFIvs7dVAKgZIQyjOfao="
+    - GIT_NAME: Nathan Friedly [via Travis CI]
+    - GH_REPO: nfriedly/space-jump
+    - secure: "WMh/6O1oL2bu+WNK5u5VdOjj7zoQXNIK9yHjEOgN56+C3Vv6apy58sX9lQj27b8o9ylH3XLtdFzmICIVaXX4d9KisomwrPy7IY7QIAEtLn9GIHesfYuzqJ1nN54z4C5Fwt8/vy0afF5gPuHGxoX/mQANFIvs7dVAKgZIQyjOfao="
 
 after_success:
   - gulp deploy
