@@ -1,6 +1,11 @@
-var UP = "up";
-var LEFT = "left";
-var RIGHT = "right";
+(function(root) {
+  'use strict';
+
+  var Keyboard = {};
+
+var UP = 'up';
+var LEFT = 'left';
+var RIGHT = 'right';
 
 var keyMap = [];
 keyMap[38] = UP;
@@ -8,7 +13,7 @@ keyMap[37] = LEFT;
 keyMap[39] = RIGHT;
 //todo: add WASD + spacebar
 
-var inputMap = {
+var inputMap = Keyboard.inputMap = {
   up: false,
   left: false,
   right: false
@@ -30,3 +35,8 @@ function handleKeyup(evt) {
 
 window.addEventListener('keydown', handleKeydown, true);
 window.addEventListener('keyup', handleKeyup, true);
+
+
+  root.Keyboard = Keyboard;
+
+}(this));

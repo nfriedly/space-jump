@@ -38,6 +38,8 @@
           <p>But, there's a problem. There's too much debris in orbit. That, and the fact that
             your weak-sauce engine isn't anywhere near powerful enough to escape this planet's gravity.</p>
           <p>Nevermind that, the fearless captain (you) always has a plan! Maybe if you can just get up to that first piece of floating space junk...</p>
+
+          <p><button class="btn btn-default" id="pause">Pause</button> <button class="btn btn-default" id="debug">Toggle Debug</button></p>
         </div>
       </div>
     </div>
@@ -61,8 +63,10 @@
 
 
         <!-- build:js scripts/main.js -->
+        <script src="scripts/util.js"></script>
+        <script src="scripts/settings.js"></script>
         <script src="scripts/canvas.js"></script>
-        <script src="scripts/platform.js"></script>
+        <script src="scripts/platforms.js"></script>
         <script src="scripts/player.js"></script>
         <script src="scripts/background.js"></script>
         <script src="scripts/keyboard.js"></script>

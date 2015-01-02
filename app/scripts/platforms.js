@@ -1,3 +1,10 @@
+/* exported: Platforms */
+/* globals Canvas */
+
+(function(root){
+  'use strict';
+
+
 var PLATFORM_HEIGHT = 2;
 
 function Platform(x, y, width) {
@@ -49,9 +56,9 @@ Platform.prototype.getPath = function () {
   return path;
 };
 
-Platform.prototype.draw = function (offset) {
+Platform.prototype.draw = function (offset, ctx) {
   var platform = this;
-  var y = toCanvasY(platform.y, PLATFORM_HEIGHT, offset);
+  var y = Canvas.mapY(platform.y, platform.height, offset);
   var gradient = ctx.createLinearGradient(platform.x, y, platform.x + platform.width * 2 / 3, platform.height * 2);
   gradient.addColorStop(0, '#887723');
   gradient.addColorStop(1, '#662211');
@@ -59,48 +66,51 @@ Platform.prototype.draw = function (offset) {
   var path = platform.getPath();
   ctx.beginPath();
   path.forEach(function (point) {
-    ctx.lineTo(point.x, toCanvasY(point.y));
+    ctx.lineTo(point.x, Canvas.mapY(point.y, platform.height, offset));
   });
   ctx.fill();
 };
 
-var planet = new Platform(0, 0 - PLATFORM_HEIGHT, canvas.width);
+  var planetHeight = Canvas.height / 2;
+var planet = new Platform(0, 0 - planetHeight, Canvas.width);
 planet.isPlanet = true;
-planet.height = canvas.height / 2;
+planet.height = planetHeight;
 // todo: add some craters to planet.draw =
 
-var platforms = [
+var Platforms = [
   planet
 ];
 
 // generate the rest of the platforms
 var lastPlatform = planet;
 for (var i = 1; i <= 100; i++) {
-  var y = lastPlatform.y + 60 + Math.round(Math.abs(Math.cos(i)) * 100) + i * 2;
+  var y = lastPlatform.y + lastPlatform.height + 60 + Math.round(Math.abs(Math.cos(i)) * 100) + i * 2;
   var width = 60 + Math.round(Math.abs(Math.sin(i)) * 150 - i * 1.5);
-  var x = canvas.width / 2 + Math.round(Math.cos(i) * canvas.width / 2) - width/2;
+  var x = Canvas.width / 2 + Math.round(Math.cos(i) * Canvas.width / 2) - width/2;
   lastPlatform = new Platform(x, y, width);
-  platforms.push(lastPlatform);
+  Platforms.push(lastPlatform);
 }
 
+Platforms.GAME_HEIGHT = Platforms[Platforms.length-1].y + 200;
 
-var GAME_HEIGHT = platforms[platforms.length-1].y + 200;
-
-function getVisiblePlatforms() {
-  var min = getOffset();
-  var max = min + canvas.height;
+  Platforms.getVisiblePlatforms =function () {
+  var min = Canvas.getOffset();
+  var max = min + Canvas.height;
   // this can probably be optimized by knowing what we included last time and working forward/backward from their indexes
-  return platforms.filter(function (platform) {
-    return platform.y > min && platform.y < max;
+  return Platforms.filter(function (platform) {
+    return platform.y + platform.height > min && platform.y < max;
   });
-}
+};
 
 
-function drawPlatforms() {
-  var platformsToDraw = getVisiblePlatforms();
-  var offset = getOffset();
+  Platforms.draw = function (ctx) {
+  var platformsToDraw = Platforms.getVisiblePlatforms();
+  var offset = Canvas.getOffset();
   platformsToDraw.forEach(function (platform) {
-    platform.draw(offset);
+    platform.draw(offset, ctx);
   });
-}
+};
 
+root.Platforms = Platforms;
+
+}(this));

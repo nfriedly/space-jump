@@ -1,20 +1,24 @@
-
+/* exported: Player */
+/* globals Keyboard, Platforms, Util, Canvas*/
+(function(root) {
+  'use strict';
 var PLAYER_WIDTH = 15;
 
-var player = {
-  x: platforms[0].x + platforms[0].width / 2 - PLAYER_WIDTH / 2,
+var Player = {
+  x: Platforms[0].x + Platforms[0].width / 2 - PLAYER_WIDTH / 2,
   y: 0,
   velocityX: 0,
   velocityY: 0,
-  isOnPlatform: true
+  isOnPlatform: true,
+  width: PLAYER_WIDTH
 };
 
 
-function drawPlayer() {
+Player.draw = function (ctx) {
   ctx.fillStyle = '#ffffff';
   ctx.beginPath();
-  var x = player.x;
-  var y = toCanvasY(player.y);
+  var x = Player.x;
+  var y = Canvas.mapY(Player.y);
 
   // left wing
   ctx.moveTo(x+4, y-3);
@@ -45,10 +49,10 @@ function drawPlayer() {
 
   var ms = (new Date()).getMilliseconds();
   var flameExtras = [3, 5, 2, 7];
-  var extra = mapToArray(ms, 0, 999, flameExtras);
+  var extra = Util.mapToArray(ms, 0, 999, flameExtras);
 
   // bottom rocket
-  if (inputMap.up) {
+  if (Keyboard.inputMap.up) {
     // red
     ctx.fillStyle = '#FF1D0E';
     ctx.beginPath();
@@ -67,7 +71,7 @@ function drawPlayer() {
   }
 
   // left rocket (lights up when right arrow is pressed)
-  if (inputMap.right) {
+  if (Keyboard.inputMap.right) {
     // red
     ctx.fillStyle = '#FF1D0E';
     ctx.beginPath();
@@ -86,7 +90,7 @@ function drawPlayer() {
   }
 
   // left rocket (lights up when right arrow is pressed)
-  if (inputMap.left) {
+  if (Keyboard.inputMap.left) {
     // red
     ctx.fillStyle = '#FF1D0E';
     ctx.beginPath();
@@ -111,13 +115,17 @@ function drawPlayer() {
   ctx.lineTo(x+7, y);
   ctx.stroke();
 
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = '#ffffff';
   ctx.beginPath();
   ctx.arc(x+4,y-17, 3, 0, Math.PI*2, false);
   ctx.fill();
 
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = '#ffffff';
   ctx.beginPath();
   ctx.arc(x+10,y-17, 3, 0, Math.PI*2, false);
   ctx.fill();
-}
+};
+
+  root.Player = Player;
+
+}(this));
