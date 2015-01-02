@@ -1,5 +1,5 @@
 /* exported: background */
-/* globals Canvas, Platforms */
+/* globals Canvas, Platforms, Player */
 
 (function(root) {
   'use strict';
@@ -16,8 +16,9 @@
   Background.draw = function (ctx) {
     var bg = Background.image;
 
-    var offset = Canvas.getOffset() / (Platforms.GAME_HEIGHT+20) * bg.height;
-    ctx.drawImage(bg, 0, Canvas.height - bg.height + offset);
+    // Canvas.height * 1.5 is because of an extra 0.5 at the bottom and 1 at the top (0.5 after the last platform + 0.5 above the player)
+    var y = Util.mapValue(Player.y, 0,Platforms.GAME_HEIGHT, Canvas.height-bg.height, 0);
+    ctx.drawImage(bg, 0, y);
   };
 
   root.Background = Background;

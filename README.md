@@ -9,8 +9,6 @@ Try it out at http://nfriedly.github.io/space-jump/dist/
 Todo
 ----
 
-* fix background image above ~ 80%
-* mini-map
 * better artwork
 * better physics
 * sounds (and music?)

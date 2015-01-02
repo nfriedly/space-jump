@@ -105,6 +105,7 @@
     Platforms.draw(ctx);
     Player.draw(ctx);
     Player.drawFuelGuage(ctx);
+    Player.drawMiniMap(ctx);
     if (Settings.debug) {
       drawDebug();
     }

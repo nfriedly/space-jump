@@ -9,8 +9,9 @@
   var MIN_FUEL_TO_START_BURN = 2; // players fuel can drop below this if there were already burning, but they can't start a burn when below this
   var VELOCITY_MAX = 10; // pixels per second
   var ACCELERATION = 10; // pps/keypress
-  var DECELERATION = 6; // pps/s
-  var FRICTION = 10; // left/right resistance when player is on a platform
+  var GRAVITY = 6; // pps/s
+  var L_R_DRAG = 3; // pps that left/right movements decelerate by per second
+  var FRICTION = 6.5; // extra left/right resistance when player is on a platform
 
   var Player = {
     x: Platforms[0].x + Platforms[0].width / 2 - PLAYER_WIDTH / 2,
@@ -24,7 +25,8 @@
   };
 
   Player.tick = function (elapsed, inputs) {
-    var tickDecel = elapsed * DECELERATION;
+    var tickDecel = elapsed * GRAVITY;
+    var tickLRDrag = elapsed * L_R_DRAG;
     var tickAccel = elapsed * ACCELERATION;
     var tickFriction = elapsed * FRICTION;
     var fuelBurnt = elapsed * FUEL_BURN_RATE;
@@ -71,9 +73,9 @@
 
 
     if (Player.velocityX > 0) {
-      Player.velocityX = Math.max(0, Player.velocityX - tickDecel - (standing ? tickFriction : 0));
+      Player.velocityX = Math.max(0, Player.velocityX - tickLRDrag - (standing ? tickFriction : 0));
     } else if (Player.velocityX < 0) {
-      Player.velocityX = Math.min(0, Player.velocityX + tickDecel + (standing ? tickFriction : 0));
+      Player.velocityX = Math.min(0, Player.velocityX + tickLRDrag + (standing ? tickFriction : 0));
     }
     Player.velocityY = Math.max(-VELOCITY_MAX, Player.velocityY - tickDecel);
 
@@ -99,6 +101,7 @@
     }
 
   };
+
 
 
   Player.draw = function (ctx) {
@@ -220,16 +223,69 @@
   };
 
   Player.drawFuelGuage = function(ctx) {
-    ctx.strokeStyle = ctx.fillStyle = 'rgba(0, 121, 248, 0.81)';
+    ctx.strokeStyle = 'rgba(0, 121, 248, 0.8)';
+    ctx.fillStyle = 'rgba(0, 121, 248, 0.7)';
     ctx.font = '10px Helvetica';
     var text = 'FUEL';
     var textWidth = ctx.measureText(text).width;
-    ctx.lineWidth = 2;
-    var guageWidth = 40 + ctx.lineWidth*2;
+    ctx.lineWidth = 1;
+    var guageWidth = 40;
     var padding = 10;
     ctx.fillText(text, Canvas.width - (textWidth + guageWidth + padding*2), padding);
     ctx.strokeRect(Canvas.width - (guageWidth + padding), padding, guageWidth, 10);
     ctx.fillRect(Canvas.width - (guageWidth + padding), padding, guageWidth * Player.fuel / FUEL_MAX, 10);
+  };
+
+  /*
+  // this won't quite work because the alpha transparency is lost when copying the image over
+  // set up pattern for minimap
+  var mmpc = document.createElement('canvas');
+  mmpc.height = mmpc.width = 10;
+  var mmctx = mmpc.getContent('2d');
+  mmctx.strokeStyle = 'rgba(0, 121, 248, 0.8)';
+  mmctx.fillStyle = 'rgba(0, 121, 248, 0.7)';
+  mmctx.fillRect(0, 0, mmctx.width, mmctx.height);
+  mmctx.beginPath();
+  mmctx.moveTo(0, mmctx.height);
+  mmctx.lineTo(mmctx.width, mmctx.height);
+  mmctx.lineTo(mmctx.width, 0);
+  mmctx.stroke();
+  */
+
+  Player.drawMiniMap = function(ctx) {
+    ctx.strokeStyle = 'rgba(0, 121, 248, 0.8)';
+    ctx.fillStyle = 'rgba(0, 121, 248, 0.7)';
+    var padding = 10;
+    var mapHeight = 100 + ctx.lineWidth*2;
+    ctx.lineWidth = 1;
+    var mapWidth =  40 + ctx.lineWidth*2;
+    // map bg
+    ctx.fillRect(Canvas.width - (mapWidth + padding), Canvas.height - padding - mapHeight, mapWidth, mapHeight);
+    ctx.strokeRect(Canvas.width - (mapWidth + padding), Canvas.height - padding - mapHeight, mapWidth, mapHeight);
+
+    // text
+    var text = "MAP";
+    var textWidth = ctx.measureText(text).width;
+    var textHeight = 12;
+    ctx.fillText(text, Canvas.width - (textWidth + mapWidth + padding*2), Canvas.height-padding-textHeight);
+
+    // planet
+    ctx.fillStyle = '#887723';
+    ctx.globalAlpha = 0.8;
+    ctx.beginPath();
+    ctx.arc(Canvas.width - mapWidth/2 -padding, Canvas.height-padding+36, mapWidth, Math.PI/180*240, Math.PI/180*300);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // player location
+    var y = Canvas.height - (padding + Util.mapValue(Player.y, 0, Platforms.GAME_HEIGHT, 9, mapHeight));
+    var x = Canvas.width - mapWidth/2 -padding;
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.moveTo(x-3, y+3);
+    ctx.lineTo(x+3, y+3);
+    ctx.lineTo(x, y-3);
+    ctx.fill();
   };
 
   root.Player = Player;

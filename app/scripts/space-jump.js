@@ -44,14 +44,14 @@
         break;
       case states.PLAYING:
         Player.tick(elapsed, inputs);
-        if (Player.y > Platforms.GAME_HEIGHT + Canvas.height / 2) {
+        if (Player.y >= Platforms.GAME_HEIGHT) {
           gameState = states.WIN;
         }
         Canvas.render();
         break;
       case states.WIN:
         Canvas.render();
-        Canvas.drawDialog('You win!', 'rgba(30, 255, 30, 0.8');
+        Canvas.drawDialog('You win!', 'rgba(30, 255, 30, 0.8)');
         break;
     }
     requestAnimationFrame(tick);

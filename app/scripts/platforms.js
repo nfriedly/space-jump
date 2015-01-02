@@ -91,7 +91,7 @@ for (var i = 1; i <= 100; i++) {
   Platforms.push(lastPlatform);
 }
 
-Platforms.GAME_HEIGHT = Platforms[Platforms.length-1].y + 200;
+Platforms.GAME_HEIGHT = Platforms[Platforms.length-1].y + Canvas.height/2;
 
   Platforms.getVisiblePlatforms =function () {
   var min = Canvas.getOffset();
