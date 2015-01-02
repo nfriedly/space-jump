@@ -12,4 +12,57 @@ canvas {max-width: 100%; }
   }
 }
 
-$color: rgba(0, 121, 248, 0.81)
+body {
+  background-color: black;
+  background-image: url('../images/PIA09579.jpg');
+  background-size: cover;
+}
+
+footer {
+  @extend .navbar;
+  @extend .navbar-inverse;
+  p {
+    @extend .navbar-text;
+  }
+  margin-bottom: 0;
+}
+@media(min-width: $screen-sm) {
+  footer {
+    // basically just `@extend .navbar-fixed-bottom;` except that doesn't work for in @media queries for some reason
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: $zindex-navbar-fixed;
+    bottom: 0;
+    margin-bottom: 0; // override .navbar defaults
+    border-width: 1px 0 0;
+  }
+  body {
+    padding-bottom: 70px; /* for footer */
+  }
+}
+
+h1 {
+  color: white;
+  text-shadow: rgb(0, 178, 239) 0 0 2px;
+}
+
+.text {
+  background-color: $navbar-inverse-bg;
+  border-color: $navbar-inverse-border;
+  color: $navbar-inverse-color;
+  padding: 8px;
+}
+
+.btn-default {
+  background-color: $navbar-inverse-bg;
+  border-color: $navbar-inverse-border;
+  color: $navbar-inverse-color;
+}
+
+@media(min-width: $screen-sm) {
+  canvas, .text {
+    box-shadow: 6px 6px 20px 6px #050505;
+  }
+}
+

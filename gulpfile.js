@@ -122,11 +122,20 @@ gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras'], function () 
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
-gulp.task('deploy', ['build'], function() {
-  return gulp.src('.dist/**/*')
-    .pipe($.deploy({}));
+// deploy the public folder to gh-pages
+gulp.task('deploy', ["build"], function(cb) {
+  var opts = {};
+  if(process.env.GH_TOKEN) {
+    opts.repo = 'https://' + process.env.GH_TOKEN + '@github.com/' + process.env.GH_REPO + '.git';
+    opts.user = {
+      name: process.env.GIT_NAME,
+      email: process.env.GIT_EMAIL
+    }
+  }
+  ghpages.publish(path.join(process.cwd(), "dist"), cb);
 });
 
 gulp.task('default', ['clean'], function () {
   gulp.start('build');
 });
+

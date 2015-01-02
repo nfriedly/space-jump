@@ -1,5 +1,5 @@
 /* exported: background */
-/* globals Canvas, Platforms, Player */
+/* globals Canvas, Platforms, Player, Util */
 
 (function(root) {
   'use strict';
@@ -10,7 +10,7 @@
   Background.image.onload = function() {
     Background.image.loaded = true;
   };
-  Background.image.src = 'images/PIA17843.jpg';
+  Background.image.src = 'images/PIA17843-cropped.jpg';
 
 
   Background.draw = function (ctx) {

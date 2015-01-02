@@ -264,7 +264,7 @@
     ctx.strokeRect(Canvas.width - (mapWidth + padding), Canvas.height - padding - mapHeight, mapWidth, mapHeight);
 
     // text
-    var text = "MAP";
+    var text = 'MAP';
     var textWidth = ctx.measureText(text).width;
     var textHeight = 12;
     ctx.fillText(text, Canvas.width - (textWidth + mapWidth + padding*2), Canvas.height-padding-textHeight);

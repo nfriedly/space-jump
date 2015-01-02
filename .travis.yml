@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+- '0.10'
+env:
+  global:
+    GIT_NAME: Nathan Friedly [via Travis CI]
+    GH_REPO: nfriedly/space-jump
+    secure: FYWYyPcyDykWIa0flNyrYn5WR9XS/HiV4DfOFr2gTPRciRaEDQCJclzqGdWrWsEvmAyTQpY+xclWheECl7qoDA2eT2BWo5wV1p2oqqNNsMxkNnLwPvpifUeDaa0O7avoUf5CT12dbISg7SrH5Gb2yFV6CRjF4mSSKuiN+Ec5/9g=
+
+after_success:
+  - gulp deploy

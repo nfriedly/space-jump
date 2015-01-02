@@ -8,13 +8,14 @@ Try it out at http://nfriedly.github.io/space-jump/dist/
 
 Todo
 ----
-
 * better artwork
 * better physics
 * sounds (and music?)
 * explosions on a hard collision
 * some effect for soft collision
 * moving platforms (?)
+* "real" tests
+* clean up design
 
 
 Credits
