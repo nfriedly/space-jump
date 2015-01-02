@@ -134,6 +134,8 @@ gulp.task('deploy', ["build"], function(cb) {
       name: process.env.GIT_NAME,
       email: process.env.GIT_EMAIL
     }
+  } else {
+    console.log('No GH_TOKEN found in env, assuming git is already set up.')
   }
   ghpages.publish(pathUtil.join(process.cwd(), "dist"), opts, cb);
 });
