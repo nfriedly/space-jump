@@ -128,13 +128,14 @@ gulp.task('build', ['html', 'images', 'fonts', 'extras'], function () {
 gulp.task('deploy', ["build"], function(cb) {
   var opts = {};
   if(process.env.GH_TOKEN) {
+    console.log('Deploying as ', process.env.GIT_NAME);
     opts.repo = 'https://' + process.env.GH_TOKEN + '@github.com/' + process.env.GH_REPO + '.git';
     opts.user = {
       name: process.env.GIT_NAME,
       email: process.env.GIT_EMAIL
     }
   }
-  ghpages.publish(pathUtil.join(process.cwd(), "dist"), cb);
+  ghpages.publish(pathUtil.join(process.cwd(), "dist"), opts, cb);
 });
 
 gulp.task('default', ['clean'], function () {
