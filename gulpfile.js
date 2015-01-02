@@ -3,6 +3,8 @@
 // generated on 2014-12-28 using generator-gulp-webapp 0.2.0
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
+var ghpages = require('gh-pages');
+var pathUtil = require('path');
 
 gulp.task('styles', function () {
   return gulp.src('app/styles/main.scss')
@@ -132,7 +134,7 @@ gulp.task('deploy', ["build"], function(cb) {
       email: process.env.GIT_EMAIL
     }
   }
-  ghpages.publish(path.join(process.cwd(), "dist"), cb);
+  ghpages.publish(pathUtil.join(process.cwd(), "dist"), cb);
 });
 
 gulp.task('default', ['clean'], function () {
