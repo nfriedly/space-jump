@@ -6,6 +6,10 @@
 
 
   var Canvas = document.getElementById('game-window');
+  if (Canvas.width > window.innerWidth) {
+    Canvas.width = window.innerWidth;
+    Canvas.height = 400;
+  }
 
   var ctx = Canvas.getContext('2d');
 
@@ -76,10 +80,10 @@
     ctx.font = '20px Helvetica';
     ctx.textBaseline = 'top';
     var lines = text.split('\n');
-    var padding = 10;
+    var padding = 30;
     var width = getMaxLineWidth(lines) + padding * 2;
     var lineHeight = 25;
-    var height = lines.length * lineHeight + padding * 1.5; // only half padding on the bottom because of the line-height
+    var height = lines.length * lineHeight + padding * 2 -5; // -5 because of the extra line-height on the bottom line
     var left = Canvas.width / 2 - width / 2;
     var top = Canvas.height / 2 - height / 2;
     ctx.fillStyle = background || 'rgba(255, 255, 255, 0.8)';

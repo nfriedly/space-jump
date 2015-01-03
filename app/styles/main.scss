@@ -14,8 +14,14 @@ canvas {max-width: 100%; }
 
 body {
   background-color: black;
-  background-image: url('../images/PIA09579.jpg');
+  background-image: url('../images/stardust.png');
   background-size: cover;
+}
+
+@media
+(-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+  background-image: url('../images/stardust_@2X.png');
 }
 
 footer {

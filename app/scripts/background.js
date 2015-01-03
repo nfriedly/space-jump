@@ -10,7 +10,8 @@
   Background.image.onload = function() {
     Background.image.loaded = true;
   };
-  Background.image.src = 'images/PIA17843-cropped.jpg';
+  var size = Canvas.width > 400 ? '800' : '400';
+  Background.image.src = 'images/PIA17843-' + size + '.jpg';
 
 
   Background.draw = function (ctx) {
