@@ -37,18 +37,18 @@
 
     if (!Player.isWaitingOnFuel) {
 
-      // this does actually let the player's fuel drop below 0 when holding multiple keys, but oh well
+      // this does actually let the player use their last bit of fuel twice, but oh well
       if (inputs.up) {
         Player.velocityY = Math.min(Player.velocityY + inputs.up * tickAccel, VELOCITY_MAX);
-        Player.fuel -= inputs.up * fuelBurnt;
+        Player.fuel = Math.max(0, Player.fuel - inputs.up * fuelBurnt);
       }
       if (inputs.left) {
         Player.velocityX = Math.max(Player.velocityX - inputs.left * tickAccel, -VELOCITY_MAX);
-        Player.fuel -= inputs.left * fuelBurnt;
+        Player.fuel = Math.max(0, Player.fuel - inputs.left * fuelBurnt);
       }
       if (inputs.right) {
         Player.velocityX = Math.min(Player.velocityX + inputs.right * tickAccel, VELOCITY_MAX);
-        Player.fuel -= inputs.right * fuelBurnt;
+        Player.fuel = Math.max(0, Player.fuel - inputs.right * fuelBurnt);
       }
     }
 
@@ -225,7 +225,7 @@
   Player.drawFuelGuage = function(ctx) {
     ctx.strokeStyle = 'rgba(0, 121, 248, 0.8)';
     ctx.fillStyle = 'rgba(0, 121, 248, 0.7)';
-    ctx.font = '10px Helvetica';
+    ctx.font = '10px Helvetica, sans-serif';
     var text = 'FUEL';
     var textWidth = ctx.measureText(text).width;
     ctx.lineWidth = 1;
@@ -264,6 +264,7 @@
     ctx.strokeRect(Canvas.width - (mapWidth + padding), Canvas.height - padding - mapHeight, mapWidth, mapHeight);
 
     // text
+    ctx.font = '10px Helvetica, sans-serif';
     var text = 'MAP';
     var textWidth = ctx.measureText(text).width;
     var textHeight = 12;

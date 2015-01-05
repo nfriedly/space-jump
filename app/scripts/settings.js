@@ -5,11 +5,9 @@
     debug: false
   };
 
-  Object.keys(Settings).forEach(function(key) {
-    document.getElementById(key).onclick = function() {
-      Settings[key] = !Settings[key];
-    };
-  });
+  document.getElementById('debug').onclick = function() {
+    Settings.debug = !Settings.debug;
+  };
 
   root.Settings = Settings;
 }(this));

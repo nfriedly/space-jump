@@ -4,12 +4,7 @@
 (function (root) {
   'use strict';
 
-
   var Canvas = document.getElementById('game-window');
-  if (Canvas.width > window.innerWidth) {
-    Canvas.width = window.innerWidth;
-    Canvas.height = 400;
-  }
 
   var ctx = Canvas.getContext('2d');
 
