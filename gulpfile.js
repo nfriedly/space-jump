@@ -14,7 +14,10 @@ gulp.task('styles', function () {
 });
 
 gulp.task('jshint', function () {
-  return gulp.src('app/scripts/**/*.js')
+  return gulp.src([
+      'gulpfile.js',
+      'app/scripts/**/*.js'
+    ])
     .pipe($.jshint())
     .pipe($.jshint.reporter('jshint-stylish'))
     .pipe($.jshint.reporter('fail'));
@@ -96,7 +99,7 @@ gulp.task('build', ['html', 'images', 'extras'], function () {
 });
 
 // deploy the public folder to gh-pages
-gulp.task('deploy', ["build"], function(cb) {
+gulp.task('deploy', ['build'], function(cb) {
   var opts = {};
   if(process.env.GH_TOKEN) {
     console.log('Deploying as ', process.env.GIT_NAME);
@@ -104,11 +107,11 @@ gulp.task('deploy', ["build"], function(cb) {
     opts.user = {
       name: process.env.GIT_NAME,
       email: process.env.GIT_EMAIL
-    }
+    };
   } else {
-    console.log('No GH_TOKEN found in env, assuming git is already set up.')
+    console.log('No GH_TOKEN found in env, assuming git is already set up.');
   }
-  ghpages.publish(pathUtil.join(process.cwd(), "dist"), opts, cb);
+  ghpages.publish(pathUtil.join(process.cwd(), 'dist'), opts, cb);
 });
 
 gulp.task('default', ['clean'], function () {
