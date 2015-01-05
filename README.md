@@ -17,7 +17,7 @@ Todo
 * some effect for soft collision
 * moving platforms (?)
 * "real" tests
-* clean up design
+* make touch controls work on area below canvas
 
 
 Credits
