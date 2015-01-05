@@ -8,7 +8,8 @@ body {
   height:100%;
 }
 body {
-  background-color: black;
+  background-color: #444349;
+  background-image: url('../images/stardust.png');
   color: #9d9d9d;
   font-family: 'Share Tech', sans-serif;
 }
@@ -41,7 +42,6 @@ h1, .toggle-nav {
   font-size: 30px;
 }
 h1 {
-  color: white;
   display: inline-block;
   margin: 0;
   padding: 0 15px;
@@ -73,24 +73,33 @@ h1 {
   padding: 5px 15px;
 }
 .nav li a:hover {
-  background-color: #444;
+  background-color: #444349;
 }
 
 canvas {
-  width: 100%; /* set by JS on load, but this is good for window resizes */
+  width: 100%; /* the canvas is always rendered at 400x400, and then the browser stretches it to 100% as if it were an image */
   display: block;
   margin: auto;
-  /*box-shadow: 6px 6px 20px 6px #050505;*/
 }
 
 /* large(er) screen rules */
-
-@media(min-width: 600px) {
-  body {
-    background-image: url('../images/stardust.png');
+@media(min-width: 900px) {
+  .container {
+    max-width: 900px;
+  }
+  main {
+    width: 600px;
+    float: left;
   }
   header {
-    display: block;
+    width:300px;
+    float: right;
+  }
+  .toggle-nav {
+    display: none;
+  }
+  .nav {
+    max-height: 400px;
   }
 }
 

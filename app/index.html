@@ -20,7 +20,8 @@
   </head>
   <body>
 
-    <header class="padded container clearfix">
+    <div class="container">
+      <header>
         <h1><a href="./">Space Jump</a></h1>
         <a href="#nav" class="toggle-nav" onclick="return false">&#9660;</a>
         <ul id="nav" class="nav">
@@ -30,10 +31,12 @@
           <li><a href="https://github.com/nfriedly/space-jump">Source code available on GitHub</a></li>
           <li><a href="#" id="debug">Toggle Debug</a></li>
         </ul>
-    </header>
-    <main class="container game-window-container">
-      <canvas id="game-window" height="400" width="400"></canvas>
-    </main>
+      </header>
+      <main class="game-window-container">
+        <canvas id="game-window" height="400" width="400"></canvas>
+      </main>
+    </div>
+
 
 
 

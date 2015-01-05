@@ -23,7 +23,7 @@ gulp.task('jshint', function () {
 gulp.task('html', ['styles'], function () {
   var lazypipe = require('lazypipe');
   var cssChannel = lazypipe()
-    .pipe($.csso)
+    .pipe($.csso);
   var assets = $.useref.assets({searchPath: '{.tmp,app}'});
 
   return gulp.src('app/*.html')
@@ -64,9 +64,6 @@ gulp.task('connect', ['styles'], function () {
     .use(require('connect-livereload')({port: 35729}))
     .use(serveStatic('.tmp'))
     .use(serveStatic('app'))
-    // paths to bower_components should be relative to the current file
-    // e.g. in app/index.html you should use ../bower_components
-    .use('/bower_components', serveStatic('bower_components'))
     .use(serveIndex('app'));
 
   require('http').createServer(app)
@@ -80,19 +77,6 @@ gulp.task('serve', ['connect', 'watch'], function () {
   require('opn')('http://localhost:9000');
 });
 
-// inject bower components
-gulp.task('wiredep', function () {
-  var wiredep = require('wiredep').stream;
-
-  gulp.src('app/styles/*.scss')
-    .pipe(wiredep())
-    .pipe(gulp.dest('app/styles'));
-
-  gulp.src('app/*.html')
-    .pipe(wiredep({exclude: ['bootstrap-sass-official']}))
-    .pipe(gulp.dest('app'));
-});
-
 gulp.task('watch', ['connect'], function () {
   $.livereload.listen();
 
@@ -104,8 +88,7 @@ gulp.task('watch', ['connect'], function () {
     'app/images/**/*'
   ]).on('change', $.livereload.changed);
 
-  gulp.watch('app/styles/**/*.scss', ['styles']);
-  gulp.watch('bower.json', ['wiredep']);
+  gulp.watch('app/styles/**/*.css', ['styles']);
 });
 
 gulp.task('build', ['html', 'images', 'extras'], function () {

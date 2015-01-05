@@ -34,8 +34,7 @@
     "main-bower-files": "^2.1.0",
     "opn": "^1.0.0",
     "serve-index": "^1.1.4",
-    "serve-static": "^1.4.0",
-    "wiredep": "^2.0.0"
+    "serve-static": "^1.4.0"
   },
   "dependencies": {
     "gh-pages": "^0.2.0"
