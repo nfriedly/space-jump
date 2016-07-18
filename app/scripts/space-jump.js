@@ -39,7 +39,7 @@
           gameState = states.PLAYING;
         } else {
           Canvas.render();
-          Canvas.drawDialog('Escape the planet\'s gravity!\nPress \u2191\u20de or touch screen.', 'rgba(10, 4, 133, 0.8)');
+          Canvas.drawDialog('Escape the planet\'s gravity!\nPress [\u2191] or touch screen.', 'rgba(10, 4, 133, 0.8)');
         }
         break;
       case states.PLAYING:
