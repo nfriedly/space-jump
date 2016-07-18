@@ -4,7 +4,8 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "gulp jshint"
+    "test": "gulp jshint",
+    "start": "gulp build && gulp serve"
   },
   "devDependencies": {
     "apache-server-configs": "^2.7.1",

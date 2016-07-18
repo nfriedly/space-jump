@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '0.10'
+- 4
 
 script:
  - npm test
@@ -10,4 +10,4 @@ env:
   global:
     - GIT_NAME: "'Nathan Friedly [via Travis CI]'"
     - GH_REPO: "nfriedly/space-jump"
-    - secure: "WMh/6O1oL2bu+WNK5u5VdOjj7zoQXNIK9yHjEOgN56+C3Vv6apy58sX9lQj27b8o9ylH3XLtdFzmICIVaXX4d9KisomwrPy7IY7QIAEtLn9GIHesfYuzqJ1nN54z4C5Fwt8/vy0afF5gPuHGxoX/mQANFIvs7dVAKgZIQyjOfao="
+    - secure: "GclZ7wj+LhUJpJQOAxDK2F7NlQibDo1gpQzcbcehIGV/ZloKouDj25swysKhP4I3t8NwQntcRfkYmbgYQk+McXk9NyoNQNNl9tpgJ3dZmisTtLz4/r0tBw5m2Y3bNsfA6/qi8Gmjw4b91xlXtqdplrG8kwjVwKRqXmpf3Tjh7ic="
